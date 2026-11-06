@@ -2,6 +2,20 @@
 
 Public data for the GitaSerena app.
 
+## config.json
+
+Addresses of the public services the app calls. The app downloads this file at
+most once a day and applies it at the next start, so a service can be replaced
+without an app update. An empty value turns a service off: the app then falls
+back to its estimate, to no restaurants, or to its bundled events.
+
+- `routing`: OSRM server with the car profile, for travel times.
+- `overpass`: Overpass API server, for restaurants.
+- `events`: the events file described below.
+
+Only HTTPS addresses are accepted. Anything else is ignored and the app keeps
+its built-in address.
+
 ## events.json
 
 Upcoming events in Italy, from open data. The workflow in
