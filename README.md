@@ -1,6 +1,6 @@
 # gitaserena-data
 
-Public data for the GitaSerena app.
+Public data for the GitaSerena app, and its [privacy policy](PRIVACY.md) (in Italian).
 
 ## config.json
 
