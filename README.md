@@ -16,6 +16,19 @@ back to its estimate, to no restaurants, or to its bundled events.
 Only HTTPS addresses are accepted. Anything else is ignored and the app keeps
 its built-in address.
 
+The `app` section controls updates:
+
+- `minVersion`: an installed version below this shows only an update screen,
+  and the app cannot be used until it is updated. Raise it only when old
+  versions really stop working: stores roll updates out over hours or days.
+- `latestVersion`: below this the app shows a banner that can be closed.
+- `storeUrls`: the store pages opened by the "Aggiorna" button. When `android`
+  is empty, the app uses its Play Store page; when `ios` is empty, the update
+  screen only tells the user to open the App Store.
+
+A version that cannot be read, such as `1.0-beta`, is ignored, so a typo
+cannot lock users out. The app checks at most once a day.
+
 ## events.json
 
 Upcoming events in Italy, from open data. The workflow in

@@ -4,5 +4,13 @@
     "routing": "https://routing.openstreetmap.de/routed-car",
     "overpass": "https://overpass-api.de",
     "events": "https://raw.githubusercontent.com/giosu68/gitaserena-data/main/events.json"
+  },
+  "app": {
+    "minVersion": "0.1.0",
+    "latestVersion": "0.1.0",
+    "storeUrls": {
+      "android": "",
+      "ios": ""
+    }
   }
 }
