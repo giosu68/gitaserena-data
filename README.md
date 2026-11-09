@@ -84,6 +84,13 @@ As declared on dati.gov.it:
 - Emilia-Romagna Turismo: CC BY 4.0
 - Comune di Bologna, "Bologna Agenda Cultura": CC BY 4.0
 - Comune di Firenze, "Eventi a Firenze": CC BY 4.0
+- Regione Lombardia, "Manifestazioni Fieristiche Locali": CC0
+- Regione Piemonte, "Manifestazioni fieristiche" (regional calendar of fiere and
+  sagre, a Shapefile updated once a year): CC BY 4.0
+- Open Data Hub Alto Adige / Südtirol, NOI Techpark: CC0, checked on every
+  record; only festive events, recognised by their title, are kept
+- Regione Puglia, "Cosa fare in Puglia - eventi e attività": CC BY 4.0; tours,
+  guided visits and courses are left out
 - Coordinates of the comuni: Wikidata, CC0
 
 Whoever reuses the file must credit the sources above.
