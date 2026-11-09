@@ -54,7 +54,7 @@ loses data because of one bad run.
 
 ```json
 {
-  "generatedAt": "2026-11-06",
+  "generatedAt": "2026-11-09T17:40:00Z",
   "sources": { "mic": "Ministero della Cultura (CC BY 4.0)" },
   "events": [
     {
@@ -73,7 +73,8 @@ loses data because of one bad run.
 }
 ```
 
-`category` is one of `sagra`, `festa`, `mercatino`, `musica`, `cultura`.
+`generatedAt` is the UTC date and time of the build (older files have the
+date only). `category` is one of `sagra`, `festa`, `mercatino`, `musica`, `cultura`.
 
 ### Sources and licences
 

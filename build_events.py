@@ -659,7 +659,12 @@ def main():
     events.sort(key=lambda e: (e["start"], e["id"]))
     write_json(
         OUTPUT,
-        {"generatedAt": today_iso, "sources": SOURCES, "events": events},
+        {
+            # Date and time, UTC: two files of the same day stay ordered.
+            "generatedAt": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "sources": SOURCES,
+            "events": events,
+        },
     )
     log(f"events: {len(events)}, {os.path.getsize(OUTPUT) / 1e6:.2f} MB")
 
