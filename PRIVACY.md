@@ -22,9 +22,14 @@ Email: gitaserena.app@gmail.com
 L'app salva solo sul telefono:
 
 - le mete preferite;
-- le impostazioni del viaggio (consumo dell'auto, prezzo del carburante) e il tema;
+- le impostazioni del viaggio (consumo dell'auto, prezzo del carburante);
+- l'ultima ricerca con i suoi risultati, compresa la località di partenza
+  scelta, per poterla rileggere senza rete;
 - copie temporanee di previsioni meteo, percorsi, foto, eventi e della
   configurazione dei servizi, per non ripetere le stesse richieste.
+
+Sono tutti dati necessari a quello che chiedi all'app, quindi non serve il tuo
+consenso per salvarli (articolo 122 del Codice privacy).
 
 Questi dati non vengono inviati a nessuno. Si cancellano disinstallando l'app o
 cancellandone i dati dalle impostazioni del telefono.
@@ -66,15 +71,26 @@ tecnici, secondo le rispettive informative:
 - Wikimedia Foundation: https://foundation.wikimedia.org/wiki/Policy:Privacy_policy
 - GitHub: https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement
 
-Alcuni di questi servizi si trovano fuori dall'Unione europea: Norvegia e
-Svizzera, che hanno una decisione di adeguatezza, e Stati Uniti.
+MET Norway è in Norvegia, che fa parte dello Spazio economico europeo: il GDPR
+vi si applica direttamente e non c'è trasferimento verso un paese terzo.
+Open-Meteo, se scelto, è in Svizzera, che ha una decisione di adeguatezza della
+Commissione europea. GitHub e la Wikimedia Foundation sono negli Stati Uniti:
+GitHub dichiara di aderire all'EU-U.S. Data Privacy Framework, riconosciuto
+dalla decisione di adeguatezza del 10 luglio 2023; la Wikimedia Foundation non
+dichiara un meccanismo di questo tipo, e le richieste a Wikipedia e Wikimedia
+Commons, che contengono solo il titolo della pagina della meta e l'indirizzo IP,
+le ricevono direttamente i loro server, come quando apri Wikipedia nel browser.
 
 ### Link esterni e condivisione
 
-I pulsanti "Percorso su Maps", "Google Maps", "TripAdvisor", "Wikipedia" e i link alle fonti aprono
-il browser o l'app corrispondente. Da quel momento vale l'informativa di quel
-servizio. "Condividi" apre il menu di condivisione del telefono: sei tu a
-scegliere con chi e con quale app condividere la meta.
+I pulsanti "Percorso su Maps", "Apri in Mappe", "Ristoranti su Google Maps",
+"Cerca sagre ed eventi sul web" (una ricerca Google con il nome della meta e il
+mese), "Wikipedia" e i link ai siti degli eventi aprono il browser o l'app
+corrispondente. Da quel momento vale l'informativa di quel servizio: a Google
+arrivano le coordinate della meta, e per il percorso anche quelle della
+partenza; a Wikipedia il titolo della pagina. "Condividi" apre il menu di
+condivisione del telefono: sei tu a scegliere con chi e con quale app
+condividere la meta.
 
 ## Perché e su quale base
 
@@ -86,8 +102,10 @@ momento dalle impostazioni del telefono.
 
 ## I tuoi diritti
 
-Puoi chiedere accesso, rettifica, cancellazione, limitazione od opposizione al
-trattamento scrivendo all'email indicata sopra. Il titolare non conserva dati
+Puoi chiedere accesso, rettifica, cancellazione, limitazione, portabilità od
+opposizione al trattamento scrivendo all'email indicata sopra. Fornire i dati
+non è un obbligo: senza posizione puoi scrivere la località, e senza rete l'app
+mostra l'ultima ricerca salvata. Il titolare non conserva dati
 che ti riguardano: quelli sul telefono li controlli tu, quelli nei registri dei
 servizi di terzi vanno chiesti a loro. Puoi anche proporre reclamo al Garante per
 la protezione dei dati personali (https://www.garanteprivacy.it).

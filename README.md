@@ -78,20 +78,44 @@ date only). `category` is one of `sagra`, `festa`, `mercatino`, `musica`, `cultu
 
 ### Sources and licences
 
-As declared on dati.gov.it:
+As declared on dati.gov.it and on the portals, checked on 12 November 2026:
 
-- Ministero della Cultura, dati.cultura.gov.it: CC BY 4.0
-- Regione Lombardia, "Sagre e fiere su area pubblica": CC0
-- Emilia-Romagna Turismo: CC BY 4.0
-- Comune di Bologna, "Bologna Agenda Cultura": CC BY 4.0
-- Comune di Firenze, "Eventi a Firenze": CC BY 4.0
-- Regione Lombardia, "Manifestazioni Fieristiche Locali": CC0
+- Ministero della Cultura, "Eventi della cultura", dati.cultura.gov.it:
+  [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) —
+  https://dati.gov.it/view-dataset/dataset?id=eventi-della-cultura
+  (the portal's "Note legali" page still names CC BY 3.0; both allow this use)
+- Regione Lombardia, "Sagre e fiere su area pubblica":
+  [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) —
+  https://www.dati.lombardia.it/d/hs8z-dcey
+- Emilia-Romagna Turismo, events API: CC BY 4.0 —
+  https://emiliaromagnaturismo.it/it/open-data
+- Comune di Bologna, "Eventi - Bologna Agenda Cultura": CC BY 4.0 —
+  https://opendata.comune.bologna.it/explore/dataset/eventi-bologna-agenda-cultura/
+- Comune di Firenze, "Eventi a Firenze": CC BY 4.0 —
+  https://dati.gov.it/view-dataset/dataset?id=eventi-a-firenze
+- Regione Lombardia, "Manifestazioni Fieristiche Locali": CC0 1.0 —
+  https://www.dati.lombardia.it/d/tchp-wt8f
 - Regione Piemonte, "Manifestazioni fieristiche" (regional calendar of fiere and
-  sagre, a Shapefile updated once a year): CC BY 4.0
+  sagre, a Shapefile updated once a year): CC BY 4.0 —
+  https://dati.gov.it/view-dataset/dataset?id=manifestazioni-fieristiche
 - Open Data Hub Alto Adige / Südtirol, NOI Techpark: CC0, checked on every
-  record; only festive events, recognised by their title, are kept
-- Regione Puglia, "Cosa fare in Puglia - eventi e attività": CC BY 4.0; tours,
-  guided visits and courses are left out
-- Coordinates of the comuni: Wikidata, CC0
+  record (`LicenseInfo.License`, `ClosedData`); only festive events,
+  recognised by their title, are kept —
+  https://github.com/noi-techpark/odh-docs/wiki/Which-license-has-the-dataset%3F
+- Regione Puglia, "Cosa fare in Puglia - eventi e attività" (ARET
+  Pugliapromozione): CC BY 4.0; tours, guided visits and courses are left out —
+  https://dati.gov.it/view-dataset/dataset?id=cosa-fare-in-puglia-progressivo-eventi-e-attivita
+- Coordinates of the comuni: Wikidata, [CC0](https://www.wikidata.org/wiki/Wikidata:Licensing)
 
-Whoever reuses the file must credit the sources above.
+Whoever reuses the file must credit the sources above, with a link to the CC BY
+licence where it applies.
+
+## travel/
+
+The method behind the app's offline travel estimate: `calibrate_travel.py`
+computes about 50,000 car routes with OSRM, run locally on the Geofabrik
+extract of Italy, and fits the constants of `travel_model.dart`. Map data
+© OpenStreetMap contributors, [Open Database License
+(ODbL)](https://opendatacommons.org/licenses/odbl/1-0/). The table is a
+Produced Work under the ODbL; script and table are published here so that the
+derivation is open. The files are copies of those in the app repository.
