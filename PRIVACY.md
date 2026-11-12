@@ -1,6 +1,6 @@
 # Informativa privacy di GitaSerena
 
-Ultimo aggiornamento: 6 novembre 2026
+Ultimo aggiornamento: 12 novembre 2026
 
 GitaSerena è un'app gratuita che suggerisce mete per una gita in giornata, in base
 al meteo, alla distanza e all'interesse dei luoghi.
@@ -23,7 +23,7 @@ L'app salva solo sul telefono:
 
 - le mete preferite;
 - le impostazioni del viaggio (consumo dell'auto, prezzo del carburante) e il tema;
-- copie temporanee di previsioni meteo, percorsi, ristoranti, foto, eventi e della
+- copie temporanee di previsioni meteo, percorsi, foto, eventi e della
   configurazione dei servizi, per non ripetere le stesse richieste.
 
 Questi dati non vengono inviati a nessuno. Si cancellano disinstallando l'app o
@@ -35,9 +35,13 @@ La posizione del telefono è usata solo se tocchi "Usa la mia posizione", e solo
 dopo il tuo consenso al permesso di localizzazione. In alternativa puoi scrivere
 il nome di una località.
 
+La località di partenza che scrivi si cerca sul telefono, in un elenco di comuni
+e frazioni incluso nell'app: il testo che scrivi non esce dal telefono.
+
 Il punto di partenza, che sia la tua posizione o la località scelta, è usato sul
-telefono per calcolare le distanze. Esce dal telefono solo per il calcolo dei
-percorsi stradali, **arrotondato a circa 100 metri** (vedi sotto).
+telefono per calcolare distanze e tempi di viaggio, stimati senza rete. Esce dal
+telefono solo se tocchi "Percorso su Maps": in quel caso Google Maps riceve
+partenza e meta per calcolare il percorso (vedi "Link esterni").
 
 ### Servizi di terzi
 
@@ -48,14 +52,9 @@ ogni servizio riceve solo quanto indicato:
 | Servizio | A cosa serve | Cosa riceve |
 |---|---|---|
 | MET Norway (api.met.no, Norvegia) | previsioni meteo | coordinate delle mete, arrotondate a una griglia di circa 10 km |
-| Open-Meteo (Svizzera) | ricerca delle località | il testo che scrivi nel campo di partenza |
-| FOSSGIS e.V., routing.openstreetmap.de (Germania) | tempo e km di strada | punto di partenza arrotondato a circa 100 m e coordinate delle mete mostrate |
-| FOSSGIS e.V., overpass-api.de (Germania) | ristoranti vicino a una meta | coordinate della meta aperta |
 | Wikimedia Foundation (Wikipedia, Wikimedia Commons; USA) | foto delle mete | titolo della pagina Wikipedia della meta aperta |
 | GitHub (raw.githubusercontent.com; USA) | file degli eventi e configurazione dei servizi | nessun dato oltre a quelli di ogni richiesta |
 
-Se l'app è stata compilata con una chiave openrouteservice, i percorsi sono
-calcolati da HeiGIT gGmbH (Germania) invece che da FOSSGIS, con gli stessi dati.
 Se è stato scelto un altro servizio meteo, Open-Meteo o OpenWeather, questo
 riceve gli stessi dati indicati per MET Norway.
 
@@ -64,7 +63,6 @@ tecnici, secondo le rispettive informative:
 
 - MET Norway: https://www.met.no/en/About-us/privacy
 - Open-Meteo: https://open-meteo.com/en/terms
-- FOSSGIS e.V.: https://www.fossgis.de/datenschutzerkl%C3%A4rung/
 - Wikimedia Foundation: https://foundation.wikimedia.org/wiki/Policy:Privacy_policy
 - GitHub: https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement
 
@@ -73,7 +71,7 @@ Svizzera, che hanno una decisione di adeguatezza, e Stati Uniti.
 
 ### Link esterni e condivisione
 
-I pulsanti "Google Maps", "TripAdvisor", "Wikipedia" e i link alle fonti aprono
+I pulsanti "Percorso su Maps", "Google Maps", "TripAdvisor", "Wikipedia" e i link alle fonti aprono
 il browser o l'app corrispondente. Da quel momento vale l'informativa di quel
 servizio. "Condividi" apre il menu di condivisione del telefono: sei tu a
 scegliere con chi e con quale app condividere la meta.

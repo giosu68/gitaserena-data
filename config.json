@@ -1,8 +1,7 @@
 {
   "version": 1,
   "services": {
-    "routing": "https://routing.openstreetmap.de/routed-car",
-    "overpass": "https://overpass-api.de",
+    "routing": "",
     "events": "https://raw.githubusercontent.com/giosu68/gitaserena-data/main/events.json"
   },
   "app": {
