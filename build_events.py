@@ -17,11 +17,14 @@ Sources, with the licences declared on dati.gov.it:
   fiere and sagre (CC BY 4.0). A zipped Shapefile, updated once a year.
 - Open Data Hub Alto Adige / Südtirol, NOI Techpark (CC0, checked per record).
 - Regione Puglia, "Cosa fare in Puglia - eventi e attività" (CC BY 4.0).
+- Comune di Torino, eventi.comune.torino.it (CC BY 4.0, from the "Note legali"
+  of the Comune). Read from the public WordPress API of the site.
 
-The file is not written if a source fails, so a bad run cannot silently replace
-good data with less. Only the standard library is used.
+The file is not written if a source fails or gives no events, so a bad run
+cannot silently replace good data with less. Only the standard library is used.
 """
 import csv
+import html
 import math
 import struct
 import datetime
@@ -60,6 +63,7 @@ SOURCES = {
     "piemonte": "Regione Piemonte (CC BY 4.0)",
     "alto_adige": "Open Data Hub Alto Adige (CC0)",
     "puglia": "Regione Puglia (CC BY 4.0)",
+    "torino": "Comune di Torino (CC BY 4.0)",
 }
 
 # Words in a title or a type that tell what kind of event it is, first match
@@ -296,7 +300,7 @@ def from_emilia_romagna(_):
     output = []
     page, last = 1, 1
     while page <= last:
-        result = json.loads(fetch(f"https://emiliaromagnaturismo.it/opendata/v1/events?page={page}"))
+        result = json.loads(fetch(f"https://emiliaromagnaturismo.it/opendata/v1/events?lang=it&page={page}"))
         last = result["meta"]["last_page"]
         page += 1
         for item in result["data"]:
@@ -619,6 +623,107 @@ def from_puglia(_):
     return output
 
 
+# Categories of eventi.comune.torino.it. Courses and workshops are left out:
+# they are not something on that day. "Varie" goes by the words of the title.
+TORINO_CATEGORIES = {
+    "Mostra": "cultura",
+    "Teatro": "cultura",
+    "Danza": "cultura",
+    "Cinema": "cultura",
+    "Lettura": "cultura",
+    "Conferenza": "cultura",
+    "Musica": "musica",
+    "Festival": "festa",
+    "Raduno": "festa",
+    "Fiera": "mercatino",
+    "Sport": "sport",
+}
+TORINO_SKIPPED = {"Laboratorio", "Formazione"}
+TORINO_API = "https://eventi.comune.torino.it/wp-json/wp/v2/"
+
+
+def torino_place(content):
+    """The venue and its comune, from the event page: the venue is the first
+    line of the location, the comune ends the address ("corso X, 18 - Torino").
+    Some events give only "CAP 10100" as venue: then the address is used."""
+    match = re.search(
+        r'class="entry-location">(.*?)(?:<br|</span>)', content, re.S
+    )
+    venue = " ".join(html.unescape(re.sub(r"<[^>]+>", "", match.group(1))).split()) if match else ""
+    match = re.search(r'class="entry-address">(.*?)</span>', content, re.S)
+    address = " ".join(html.unescape(re.sub(r"<[^>]+>", "", match.group(1))).split()) if match else ""
+    town = address.rsplit(" - ", 1)[1].strip() if " - " in address else "Torino"
+    if not venue or venue.upper().startswith("CAP"):
+        venue = address.rsplit(" - ", 1)[0].strip() if address else town
+    return venue, town
+
+
+def from_torino(today):
+    """Events of the Comune di Torino. The site has no open data export: its
+    public WordPress API gives the events, with the coordinates only inside
+    the page of the event (the map link). Without them, the event goes at
+    the centre of its comune."""
+    comuni = {comune_key(c["name"]): c for c in load_comuni().values()}
+    names = {
+        c["id"]: c["name"]
+        for c in json.loads(
+            fetch(TORINO_API + "event-categories?per_page=100&lang=it&_fields=id,name")
+        )
+    }
+    output, page, pages = [], 1, 1
+    while page <= pages:
+        request = urllib.request.Request(
+            TORINO_API + "events?" + urllib.parse.urlencode({
+                "per_page": 100,
+                "page": page,
+                "lang": "it",
+                "_fields": "id,link,title,content,event_start_date,event_end_date,event-categories",
+            }),
+            headers={"User-Agent": USER_AGENT},
+        )
+        with urllib.request.urlopen(request, timeout=180) as response:
+            pages = int(response.headers.get("X-WP-TotalPages") or 1)
+            items = json.loads(response.read())
+        page += 1
+        time.sleep(1)  # a small municipal site
+        for item in items:
+            end = iso(item.get("event_end_date")) or iso(item.get("event_start_date"))
+            if not end or end < today:
+                continue
+            kinds = [names.get(i, "") for i in item.get("event-categories") or []]
+            if any(k in TORINO_SKIPPED for k in kinds):
+                continue
+            title = " ".join(html.unescape(re.sub(r"<[^>]+>", "", item["title"]["rendered"])).split())
+            category = next((TORINO_CATEGORIES[k] for k in kinds if k in TORINO_CATEGORIES), None)
+            if category is None:
+                category = category_from_words(title, default="cultura")
+            content = item["content"]["rendered"]
+            venue, town = torino_place(content)
+            match = re.search(r"query=(-?\d+\.\d+),(-?\d+\.\d+)", content)
+            if match:
+                lat, lon = match.group(1), match.group(2)
+            else:
+                comune = comuni.get(comune_key(town))
+                if comune is None:
+                    continue
+                lat, lon = comune["lat"], comune["lon"]
+            output.append(
+                event(
+                    "torino",
+                    item["id"],
+                    title,
+                    category,
+                    iso(item.get("event_start_date")),
+                    end,
+                    lat,
+                    lon,
+                    venue,
+                    web_url(item.get("link")),
+                )
+            )
+    return output
+
+
 def main():
     today = datetime.date.today()
     horizon = (today + datetime.timedelta(days=HORIZON_DAYS)).isoformat()
@@ -634,11 +739,16 @@ def main():
         "piemonte": from_piemonte,
         "alto_adige": from_alto_adige,
         "puglia": from_puglia,
+        "torino": from_torino,
     }
     events = []
     seen = set()
     for name, reader in readers.items():
         rows = reader(today_iso)
+        # A source that answers but gives nothing has changed, not emptied:
+        # stop, so the published file keeps its events.
+        if not rows:
+            raise SystemExit(f"{name}: 0 events read, events.json not written")
         kept = 0
         for row in rows:
             start, end = row["start"], row["end"]

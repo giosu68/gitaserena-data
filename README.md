@@ -105,6 +105,13 @@ As declared on dati.gov.it and on the portals, checked on 12 November 2026:
 - Regione Puglia, "Cosa fare in Puglia - eventi e attività" (ARET
   Pugliapromozione): CC BY 4.0; tours, guided visits and courses are left out —
   https://dati.gov.it/view-dataset/dataset?id=cosa-fare-in-puglia-progressivo-eventi-e-attivita
+- Comune di Torino, events of eventi.comune.torino.it (checked on 15 November
+  2026): CC BY 4.0, from the "Note legali" of the Comune (contents of its
+  sites, commercial use allowed with attribution; third-party contents
+  excluded). Read from the public
+  WordPress API of the site (`/wp-json/wp/v2/events`), not documented, so it
+  can change; courses and workshops are left out —
+  https://www.comune.torino.it/note-legali
 - Coordinates of the comuni: Wikidata, [CC0](https://www.wikidata.org/wiki/Wikidata:Licensing)
 
 Whoever reuses the file must credit the sources above, with a link to the CC BY
