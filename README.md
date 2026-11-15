@@ -112,6 +112,17 @@ As declared on dati.gov.it and on the portals, checked on 12 November 2026:
   WordPress API of the site (`/wp-json/wp/v2/events`), not documented, so it
   can change; courses and workshops are left out —
   https://www.comune.torino.it/note-legali
+- Comune di Cuneo, events API of its site (`/wp-json/wp/v2/eventi`), checked on
+  15 November 2026: CC BY 4.0 ("Note legali"); courses and guided visits are
+  left out; located at the centre of Cuneo —
+  https://www.comune.cuneo.it/note-legali/
+- Comuni on OpenCity (the municipal site of OpenContent), from the open data
+  API of each site (`/api/opendata/v2/content/search`), checked on 15 November
+  2026: CC BY 4.0, from the "Note legali" of each comune. The comuni are listed
+  in `OPENCITY` in `build_events.py`, found by asking the API of every comune
+  site in IndicePA; a comune that fails is left out of that run, with a line in
+  the log. Courses, workshops and routine services (weekly markets, help
+  desks, committees, anything repeated on 20 or more days) are left out.
 - Coordinates of the comuni: Wikidata, [CC0](https://www.wikidata.org/wiki/Wikidata:Licensing)
 
 Whoever reuses the file must credit the sources above, with a link to the CC BY

@@ -19,6 +19,9 @@ Sources, with the licences declared on dati.gov.it:
 - Regione Puglia, "Cosa fare in Puglia - eventi e attività" (CC BY 4.0).
 - Comune di Torino, eventi.comune.torino.it (CC BY 4.0, from the "Note legali"
   of the Comune). Read from the public WordPress API of the site.
+- Comune di Cuneo, the events API of its site (CC BY 4.0, "Note legali").
+- Comuni on OpenCity, the municipal site of OpenContent, from its open data
+  API (CC BY 4.0, "Note legali" of each comune). The list is OPENCITY.
 
 The file is not written if a source fails or gives no events, so a bad run
 cannot silently replace good data with less. Only the standard library is used.
@@ -64,7 +67,151 @@ SOURCES = {
     "alto_adige": "Open Data Hub Alto Adige (CC0)",
     "puglia": "Regione Puglia (CC BY 4.0)",
     "torino": "Comune di Torino (CC BY 4.0)",
+    "cuneo": "Comune di Cuneo (CC BY 4.0)",
 }
+
+# Comuni whose site is OpenCity, with the open data API at /api/opendata/v2.
+# Found on 15 November 2026 by asking the API of every comune site listed in
+# IndicePA; kept only the ones with upcoming events whose "Note legali" declare
+# CC BY 4.0 with commercial use. Source key: comune name.
+OPENCITY = {
+    "alba_adriatica": ("Alba Adriatica", "https://www.comune.alba-adriatica.te.it"),
+    "albano_sant_alessandro": ("Albano Sant'Alessandro", "https://www.comune.albano.bg.it"),
+    "aldeno": ("Aldeno", "https://www.comune.aldeno.tn.it"),
+    "alezio": ("Alezio", "https://www.comune.alezio.le.it"),
+    "alfonsine": ("Alfonsine", "https://www.comune.alfonsine.ra.it"),
+    "altavalle": ("Altavalle", "https://www.comune.altavalle.tn.it"),
+    "annone_di_brianza": ("Annone di Brianza", "https://www.comune.annone-di-brianza.lc.it"),
+    "arco": ("Arco", "https://www.comune.arco.tn.it"),
+    "asolo": ("Asolo", "https://www.comune.asolo.tv.it"),
+    "avio": ("Avio", "https://www.comune.avio.tn.it"),
+    "bagnacavallo": ("Bagnacavallo", "https://www.comune.bagnacavallo.ra.it"),
+    "bagnara_di_romagna": ("Bagnara di Romagna", "https://www.comune.bagnaradiromagna.ra.it"),
+    "besenello": ("Besenello", "https://www.comune.besenello.tn.it"),
+    "bolzano": ("Bolzano", "https://www.comune.bolzano.bz.it"),
+    "bondone": ("Bondone", "https://www.comune.bondone.tn.it"),
+    "borgo_chiese": ("Borgo Chiese", "https://www.comune.borgochiese.tn.it"),
+    "borgo_d_anaunia": ("Borgo D'Anaunia", "https://www.comune.borgodanaunia.tn.it"),
+    "borgo_lares": ("Borgo Lares", "https://www.comune.borgolares.tn.it"),
+    "caderzone_terme": ("Caderzone Terme", "https://www.comune.caderzoneterme.tn.it"),
+    "calci": ("Calci", "https://www.comune.calci.pi.it"),
+    "caldonazzo": ("Caldonazzo", "https://www.comune.caldonazzo.tn.it"),
+    "calvisano": ("Calvisano", "https://www.comune.calvisano.bs.it"),
+    "campodenno": ("Campodenno", "https://www.comune.campodenno.tn.it"),
+    "canal_san_bovo": ("Canal San Bovo", "https://www.comune.canalsanbovo.tn.it"),
+    "canazei": ("Canazei", "https://www.comune.canazei.tn.it"),
+    "carenno": ("Carenno", "https://www.comune.carenno.lc.it"),
+    "castel_condino": ("Castel Condino", "https://www.comune.castelcondino.tn.it"),
+    "castello_molina_di_fiemme": ("Castello-Molina di Fiemme", "https://www.comune.castellomolinadifiemme.tn.it"),
+    "cavalese": ("Cavalese", "https://www.comune.cavalese.tn.it"),
+    "cavedine": ("Cavedine", "https://www.comune.cavedine.tn.it"),
+    "cesiomaggiore": ("Cesiomaggiore", "https://www.comune.cesiomaggiore.bl.it"),
+    "chianocco": ("Chianocco", "https://www.comune.chianocco.to.it"),
+    "civezzano": ("Civezzano", "https://www.comune.civezzano.tn.it"),
+    "cles": ("Cles", "https://www.comune.cles.tn.it"),
+    "colico": ("Colico", "https://www.comune.colico.lc.it"),
+    "comano_terme": ("Comano Terme", "https://www.comune.comanoterme.tn.it"),
+    "conselice": ("Conselice", "https://www.comune.conselice.ra.it"),
+    "conta": ("Conta", "https://www.comune.conta.tn.it"),
+    "cortina_d_ampezzo": ("Cortina d'Ampezzo", "https://www.comune.cortinadampezzo.bl.it"),
+    "cotignola": ("Cotignola", "https://www.comune.cotignola.ra.it"),
+    "croviana": ("Croviana", "https://www.comune.croviana.tn.it"),
+    "denno": ("Denno", "https://www.comune.denno.tn.it"),
+    "drena": ("Drena", "https://www.comune.drena.tn.it"),
+    "dro": ("Dro", "https://www.comune.dro.tn.it"),
+    "empoli": ("Empoli", "https://www.comune.empoli.fi.it"),
+    "escalaplano": ("Escalaplano", "https://www.comune.escalaplano.ca.it"),
+    "fai_della_paganella": ("Fai della Paganella", "https://www.comune.faidellapaganella.tn.it"),
+    "fermo": ("Fermo", "https://www.comune.fermo.it"),
+    "fiano_romano": ("Fiano Romano", "https://www.comune.fianoromano.rm.it"),
+    "folgaria": ("Folgaria", "https://www.comune.folgaria.tn.it"),
+    "fusignano": ("Fusignano", "https://www.comune.fusignano.ra.it"),
+    "garniga_terme": ("Garniga Terme", "https://www.comune.garnigaterme.tn.it"),
+    "la_valletta_brianza": ("La Valletta Brianza", "https://www.comune.lavallettabrianza.lc.it"),
+    "lavarone": ("Lavarone", "https://www.comune.lavarone.tn.it"),
+    "lecco": ("Lecco", "https://www.comune.lecco.it"),
+    "ledro": ("Ledro", "https://www.comune.ledro.tn.it"),
+    "livo": ("Livo", "https://www.comune.livo.tn.it"),
+    "lodrino": ("Lodrino", "https://www.comune.lodrino.bs.it"),
+    "lograto": ("Lograto", "https://www.comune.lograto.bs.it"),
+    "lona_lases": ("Lona-lases", "https://www.comune.lonalases.tn.it"),
+    "lugo": ("Lugo", "https://www.comune.lugo.ra.it"),
+    "madruzzo": ("Madruzzo", "https://www.comune.madruzzo.tn.it"),
+    "manerbio": ("Manerbio", "https://www.comune.manerbio.bs.it"),
+    "marcheno": ("Marcheno", "https://www.comune.marcheno.bs.it"),
+    "martina_franca": ("Martina Franca", "https://www.comune.martinafranca.ta.it"),
+    "massa_lombarda": ("Massa Lombarda", "https://www.comune.massalombarda.ra.it"),
+    "massimeno": ("Massimeno", "https://www.comune.massimeno.tn.it"),
+    "masullas": ("Masullas", "https://www.comune.masullas.or.it"),
+    "mazzin": ("Mazzin", "https://www.comune.mazzin.tn.it"),
+    "mezzana": ("Mezzana", "https://www.comune.mezzana.tn.it"),
+    "mezzano": ("Mezzano", "https://www.comune.mezzano.tn.it"),
+    "montespertoli": ("Montespertoli", "https://www.comune.montespertoli.fi.it"),
+    "montevecchia": ("Montevecchia", "https://www.comune.montevecchia.lc.it"),
+    "mori": ("Mori", "https://www.comune.mori.tn.it"),
+    "nago_torbole": ("Nago-Torbole", "https://www.comune.nago-torbole.tn.it"),
+    "nogaredo": ("Nogaredo", "https://www.comune.nogaredo.tn.it"),
+    "offlaga": ("Offlaga", "https://www.comune.offlaga.bs.it"),
+    "olgiate_molgora": ("Olgiate Molgora", "https://www.comune.olgiatemolgora.lc.it"),
+    "orzinuovi": ("Orzinuovi", "https://www.comune.orzinuovi.bs.it"),
+    "orzivecchi": ("Orzivecchi", "https://www.comune.orzivecchi.bs.it"),
+    "palu_del_fersina": ("Palu' del Fersina", "https://www.comune.paludelfersina.tn.it"),
+    "panchia": ("Panchia'", "https://www.comune.panchia.tn.it"),
+    "pantelleria": ("Pantelleria", "https://www.comune.pantelleria.tp.it"),
+    "peio": ("Peio", "https://www.comune.peio.tn.it"),
+    "pelugo": ("Pelugo", "https://www.comune.pelugo.tn.it"),
+    "pieve_tesino": ("Pieve Tesino", "https://www.comune.pievetesino.tn.it"),
+    "pineto": ("Pineto", "https://www.comune.pineto.te.it"),
+    "pinzolo": ("Pinzolo", "https://www.comune.pinzolo.tn.it"),
+    "piovene_rocchette": ("Piovene Rocchette", "https://www.comune.piovene-rocchette.vi.it"),
+    "pisa": ("Pisa", "https://www.comune.pisa.it"),
+    "polaveno": ("Polaveno", "https://www.comune.polaveno.bs.it"),
+    "pomarolo": ("Pomarolo", "https://www.comune.pomarolo.tn.it"),
+    "pompu": ("Pompu", "https://www.comune.pompu.or.it"),
+    "predaia": ("Predaia", "https://www.comune.predaia.tn.it"),
+    "primaluna": ("Primaluna", "https://www.comune.primaluna.lc.it"),
+    "primiero_san_martino_di_castrozza": ("Primiero San Martino di Castrozza", "https://www.comune.primierosanmartinodicastrozza.tn.it"),
+    "riva_del_garda": ("Riva del Garda", "https://www.comune.rivadelgarda.tn.it"),
+    "rivoli": ("Rivoli", "https://www.comune.rivoli.to.it"),
+    "roncegno_terme": ("Roncegno Terme", "https://www.comune.roncegnoterme.tn.it"),
+    "ronchi_valsugana": ("Ronchi Valsugana", "https://www.comune.ronchi.tn.it"),
+    "ronzo_chienis": ("Ronzo Chienis", "https://www.comune.ronzo-chienis.tn.it"),
+    "rosignano_marittimo": ("Rosignano Marittimo", "https://www.comune.rosignano.livorno.it"),
+    "rovere_della_luna": ("Rovere' della Luna", "https://www.comune.roveredellaluna.tn.it"),
+    "rovereto": ("Rovereto", "https://www.comune.rovereto.tn.it"),
+    "rumo": ("Rumo", "https://www.comune.rumo.tn.it"),
+    "samarate": ("Samarate", "https://www.comune.samarate.va.it"),
+    "san_felice_del_benaco": ("San Felice del Benaco", "https://www.comune.sanfelicedelbenaco.bs.it"),
+    "san_lorenzo_dorsino": ("San Lorenzo Dorsino", "https://www.comune.sanlorenzodorsino.tn.it"),
+    "san_michele_all_adige": ("San Michele all'Adige", "https://www.comune.sanmichelealladige.tn.it"),
+    "san_vito_di_leguzzano": ("San Vito di Leguzzano", "https://www.comune.sanvitodileguzzano.vi.it"),
+    "sant_orsola_terme": ("Sant'Orsola Terme", "https://www.comune.santorsolaterme.tn.it"),
+    "santa_giustina": ("Santa Giustina", "https://www.comune.santagiustina.bl.it"),
+    "santorso": ("Santorso", "https://www.comune.santorso.vi.it"),
+    "schio": ("Schio", "https://www.comune.schio.vi.it"),
+    "segonzano": ("Segonzano", "https://www.comune.segonzano.tn.it"),
+    "sover": ("Sover", "https://www.comune.sover.tn.it"),
+    "spiazzo": ("Spiazzo", "https://www.comune.spiazzo.tn.it"),
+    "spormaggiore": ("Spormaggiore", "https://www.comune.spormaggiore.tn.it"),
+    "stenico": ("Stenico", "https://www.comune.stenico.tn.it"),
+    "storo": ("Storo", "https://www.comune.storo.tn.it"),
+    "tavagnacco": ("Tavagnacco", "https://www.comune.tavagnacco.ud.it"),
+    "telve_di_sopra": ("Telve di Sopra", "https://www.comune.telvedisopra.tn.it"),
+    "torcegno": ("Torcegno", "https://www.comune.torcegno.tn.it"),
+    "travagliato": ("Travagliato", "https://www.comune.travagliato.bs.it"),
+    "valdaone": ("Valdaone", "https://www.comune.valdaone.tn.it"),
+    "valli_del_pasubio": ("Valli del Pasubio", "https://www.comune.vallidelpasubio.vi.it"),
+    "velo_d_astico": ("Velo D'Astico", "https://www.comune.velodastico.vi.it"),
+    "verbania": ("Verbania", "https://www.comune.verbania.it"),
+    "vicopisano": ("Vicopisano", "https://www.comune.vicopisano.pi.it"),
+    "villaverla": ("Villaverla", "https://www.comune.villaverla.vi.it"),
+    "ville_d_anaunia": ("Ville D'Anaunia", "https://www.comune.villedanaunia.tn.it"),
+    "zane": ("Zane'", "https://www.comune.zane.vi.it"),
+    "ziano_di_fiemme": ("Ziano di Fiemme", "https://www.comune.ziano.tn.it"),
+}
+for _key, (_name, _) in OPENCITY.items():
+    SOURCES[_key] = f"Comune di {_name} (CC BY 4.0)"
+
 
 # Words in a title or a type that tell what kind of event it is, first match
 # wins. Used by the sources without a usable category.
@@ -113,13 +260,13 @@ MIC_ONLINE_ONLY = {"evento solo on-line", "Iniziative Digitali"}
 MIC_CATEGORY = {"Concerto": "musica", "Festival": "festa"}
 
 
-def fetch(url, data=None, headers=None):
+def fetch(url, data=None, headers=None, timeout=180):
     request = urllib.request.Request(
         url, data=data, headers={"User-Agent": USER_AGENT, **(headers or {})}
     )
     for attempt in range(3):
         try:
-            with urllib.request.urlopen(request, timeout=180) as response:
+            with urllib.request.urlopen(request, timeout=timeout) as response:
                 return response.read()
         except Exception as e:
             if attempt == 2:
@@ -724,6 +871,199 @@ def from_torino(today):
     return output
 
 
+# Typologies of the Cuneo agenda. Courses and guided visits are left out, as
+# for the other sources: they are not something on that day.
+CUNEO_CATEGORIES = {
+    "Evento culturale": "cultura",
+    "Mostra": "cultura",
+    "Spettacolo teatrale": "cultura",
+    "Convegno": "cultura",
+    "Festival": "festa",
+    "Evento Sportivo": "sport",
+}
+
+
+def from_cuneo(_):
+    """The agenda of the Comune di Cuneo. Only upcoming events, in one answer.
+    No coordinates: the events go at the centre of Cuneo."""
+    cuneo = {comune_key(c["name"]): c for c in load_comuni().values()}[comune_key("Cuneo")]
+    output = []
+    for item in json.loads(fetch("https://www.comune.cuneo.it/wp-json/wp/v2/eventi?per_page=100")):
+        title = " ".join(html.unescape(item.get("titolo") or "").split())
+        kind = CUNEO_CATEGORIES.get(item.get("tipologia") or "")
+        if not title or kind is None:
+            continue
+        place = " ".join((item.get("luogo") or "").split())
+        output.append(
+            event(
+                "cuneo",
+                item["id"],
+                title,
+                category_from_words(title, default=kind),
+                iso(item.get("data_inizio")),
+                iso(item.get("data_fine")),
+                cuneo["lat"],
+                cuneo["lon"],
+                "Cuneo" if not place or place.lower() == "luoghi vari" else place,
+                web_url((item.get("sorgente") or {}).get("url")),
+            )
+        )
+    return output
+
+
+# Words in a title that mark a course, a workshop or a routine service of the
+# comune, left out: nobody plans a trip for them.
+OPENCITY_SKIPPED = re.compile(
+    r"\b(laborator|corso|corsi|ginnastica|seminari|sportello|comitato|consiglio comunale"
+    r"|assemblea|terza et|mercato (settimanale|alimentare|periodico|contadino|agricolo"
+    r"|del (luned|marted|mercoled|gioved|venerd|sabato|domenica)))",
+    re.I,
+)
+# An event repeated on this many separate days is a routine (a weekly
+# meeting, a market), not an occasion.
+OPENCITY_MAX_REPEATS = 20
+
+
+def opencity_spans(interval):
+    """The days of an OpenCity event, as (start, end) spans: the recurrences
+    on following days join, so "every day until the 21st" is one event and
+    "every Saturday" is one event a week."""
+    days = sorted(
+        (r["start"][:10], r["end"][:10])
+        for r in interval.get("recurrences") or []
+    )
+    if not days:
+        given = interval.get("input") or {}
+        days = [(given.get("startDateTime", "")[:10], given.get("endDateTime", "")[:10])]
+    spans = []
+    for start, end in days:
+        if spans:
+            last_end = datetime.date.fromisoformat(spans[-1][1])
+            if datetime.date.fromisoformat(start) <= last_end + datetime.timedelta(days=1):
+                spans[-1] = (spans[-1][0], max(spans[-1][1], end))
+                continue
+        spans.append((start, end))
+    return spans
+
+
+def opencity_name(value):
+    """A name of the API: text, or {"ita-IT": text} in the plain schema."""
+    if isinstance(value, dict):
+        value = value.get("ita-IT") or next(iter(value.values()), "")
+    return " ".join(html.unescape(value or "").split())
+
+
+def opencity_events(source, base, today):
+    """Two schemas exist. The newer one gives the places with coordinates
+    (virtual_takes_place_in). The older one gives "geo", often empty, and the
+    places only by id: their coordinates are read once per place. Without any,
+    the event goes at the centre of the comune."""
+    horizon = (datetime.date.fromisoformat(today) + datetime.timedelta(days=HORIZON_DAYS)).isoformat()
+    query = f"classes [event] and calendar[time_interval] = [{today},{horizon}] limit 50"
+    url = f"{base}/api/opendata/v2/content/search/" + urllib.parse.quote(query)
+    centre = {comune_key(c["name"]): c for c in load_comuni().values()}.get(
+        comune_key(OPENCITY[source][0])
+    )
+    places = {}
+
+    def place(ref):
+        """(name, lat, lon) of a place given by id, read once."""
+        item = str(ref.get("id"))
+        if item not in places:
+            try:
+                data = json.loads(fetch(f"{base}/api/opendata/v2/content/read/{item}", timeout=30))
+                address = ((data.get("data") or {}).get("ita-IT") or {}).get("has_address") or {}
+                places[item] = (address.get("latitude") or 0, address.get("longitude") or 0)
+                time.sleep(0.5)
+            except Exception:
+                places[item] = (0, 0)
+        return places[item]
+
+    output = []
+    while url:
+        # Short: one slow comune among many must not hold up the weekly run.
+        result = json.loads(fetch(url, timeout=30))
+        time.sleep(1)  # the sites share the servers of OpenContent
+        url = (result.get("nextPageQuery") or "").replace("http://", "https://")
+        for hit in result.get("searchHits") or []:
+            data = (hit.get("data") or {}).get("ita-IT") or {}
+            title = opencity_name(data.get("event_title"))
+            if not title or OPENCITY_SKIPPED.search(title):
+                continue
+            located = [
+                p for p in data.get("virtual_takes_place_in") or []
+                if p.get("latitude") and p.get("longitude")
+            ]
+            refs = data.get("takes_place_in") or []
+            geo = data.get("geo") or {}
+            if located:
+                name, lat, lon = located[0].get("name"), located[0]["latitude"], located[0]["longitude"]
+            elif geo.get("latitude") and geo.get("longitude"):
+                name = opencity_name(refs[0].get("name")) if refs else ""
+                lat, lon = geo["latitude"], geo["longitude"]
+            elif refs and all(place(refs[0])):
+                name = opencity_name(refs[0].get("name"))
+                lat, lon = place(refs[0])
+            elif centre is not None:
+                name = opencity_name(refs[0].get("name")) if refs else centre["name"]
+                lat, lon = centre["lat"], centre["lon"]
+            else:
+                continue
+            kinds = " ".join(
+                t.get("name", "") if isinstance(t, dict) else str(t)
+                for t in data.get("virtual_has_public_event_typology")
+                or data.get("has_public_event_typology")
+                or []
+            )
+            category = category_from_words(
+                title,
+                kinds,
+                default="sport" if "sportivo" in kinds
+                else "mercatino" if "commerciale" in kinds
+                else "festa" if kinds == "Evento sociale"
+                else "cultura",
+            )
+            spans = opencity_spans(data.get("time_interval") or {})
+            if "mostra" in title.lower() and spans:
+                # An exhibition open on some days: one event, first to last day.
+                spans = [(spans[0][0], spans[-1][1])]
+            if len(spans) >= OPENCITY_MAX_REPEATS:
+                continue
+            item = hit["metadata"]["id"]
+            for n, (start, end) in enumerate(spans):
+                output.append(
+                    event(
+                        source,
+                        f"{item}-{n}",
+                        title,
+                        category,
+                        iso(start),
+                        iso(end),
+                        lat,
+                        lon,
+                        opencity_name(name) or OPENCITY[source][0],
+                        f"{base}/openpa/object/{item}",
+                    )
+                )
+    return output
+
+
+def from_opencity(today):
+    """All the comuni of OPENCITY. One comune that fails is logged and left
+    out, so many small sites cannot stop the run; the run stops only when no
+    comune answers."""
+    output = []
+    for source, (name, base) in OPENCITY.items():
+        try:
+            events = opencity_events(source, base, today)
+        except Exception as e:
+            log(f"  opencity: {name} failed ({e})")
+            continue
+        log(f"  opencity: {name} {len(events)}")
+        output.extend(events)
+    return output
+
+
 def main():
     today = datetime.date.today()
     horizon = (today + datetime.timedelta(days=HORIZON_DAYS)).isoformat()
@@ -740,6 +1080,8 @@ def main():
         "alto_adige": from_alto_adige,
         "puglia": from_puglia,
         "torino": from_torino,
+        "cuneo": from_cuneo,
+        "opencity": from_opencity,
     }
     events = []
     seen = set()
