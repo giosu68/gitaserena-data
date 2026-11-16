@@ -27,6 +27,7 @@ The file is not written if a source fails or gives no events, so a bad run
 cannot silently replace good data with less. Only the standard library is used.
 """
 import csv
+import concurrent.futures
 import html
 import math
 import struct
@@ -260,16 +261,16 @@ MIC_ONLINE_ONLY = {"evento solo on-line", "Iniziative Digitali"}
 MIC_CATEGORY = {"Concerto": "musica", "Festival": "festa"}
 
 
-def fetch(url, data=None, headers=None, timeout=180):
+def fetch(url, data=None, headers=None, timeout=180, attempts=3):
     request = urllib.request.Request(
         url, data=data, headers={"User-Agent": USER_AGENT, **(headers or {})}
     )
-    for attempt in range(3):
+    for attempt in range(attempts):
         try:
             with urllib.request.urlopen(request, timeout=timeout) as response:
                 return response.read()
         except Exception as e:
-            if attempt == 2:
+            if attempt == attempts - 1:
                 raise
             log(f"  {url[:70]} failed ({e}), trying again")
             time.sleep(10 * (attempt + 1))
@@ -922,6 +923,9 @@ OPENCITY_SKIPPED = re.compile(
 # An event repeated on this many separate days is a routine (a weekly
 # meeting, a market), not an occasion.
 OPENCITY_MAX_REPEATS = 20
+# Per comune: the pages read after this many seconds are left out.
+OPENCITY_SECONDS = 180
+OPENCITY_WORKERS = 4
 
 
 def opencity_spans(interval):
@@ -971,7 +975,7 @@ def opencity_events(source, base, today):
         item = str(ref.get("id"))
         if item not in places:
             try:
-                data = json.loads(fetch(f"{base}/api/opendata/v2/content/read/{item}", timeout=30))
+                data = json.loads(fetch(f"{base}/api/opendata/v2/content/read/{item}", timeout=20, attempts=2))
                 address = ((data.get("data") or {}).get("ita-IT") or {}).get("has_address") or {}
                 places[item] = (address.get("latitude") or 0, address.get("longitude") or 0)
                 time.sleep(0.5)
@@ -980,9 +984,13 @@ def opencity_events(source, base, today):
         return places[item]
 
     output = []
+    deadline = time.monotonic() + OPENCITY_SECONDS
     while url:
+        if time.monotonic() > deadline:
+            log(f"  opencity: {OPENCITY[source][0]} too slow, later pages left out")
+            break
         # Short: one slow comune among many must not hold up the weekly run.
-        result = json.loads(fetch(url, timeout=30))
+        result = json.loads(fetch(url, timeout=30, attempts=2))
         time.sleep(1)  # the sites share the servers of OpenContent
         url = (result.get("nextPageQuery") or "").replace("http://", "https://")
         for hit in result.get("searchHits") or []:
@@ -1052,16 +1060,22 @@ def from_opencity(today):
     """All the comuni of OPENCITY. One comune that fails is logged and left
     out, so many small sites cannot stop the run; the run stops only when no
     comune answers."""
-    output = []
-    for source, (name, base) in OPENCITY.items():
+    load_comuni()  # downloaded once, before the threads read it
+
+    def read(source, name, base):
         try:
             events = opencity_events(source, base, today)
         except Exception as e:
             log(f"  opencity: {name} failed ({e})")
-            continue
+            return []
         log(f"  opencity: {name} {len(events)}")
-        output.extend(events)
-    return output
+        return events
+
+    # A few comuni at a time: they are on different sites, but some share the
+    # servers of OpenContent, which answer 429 to many requests together.
+    with concurrent.futures.ThreadPoolExecutor(max_workers=OPENCITY_WORKERS) as pool:
+        futures = [pool.submit(read, s, n, b) for s, (n, b) in OPENCITY.items()]
+        return [e for f in futures for e in f.result()]
 
 
 def main():
@@ -1086,7 +1100,9 @@ def main():
     events = []
     seen = set()
     for name, reader in readers.items():
+        started = time.monotonic()
         rows = reader(today_iso)
+        log(f"{name}: {len(rows)} rows in {time.monotonic() - started:.0f} s")
         # A source that answers but gives nothing has changed, not emptied:
         # stop, so the published file keeps its events.
         if not rows:
